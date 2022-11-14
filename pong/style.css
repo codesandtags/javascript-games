@@ -1,0 +1,58 @@
+/**
+ * Define variables for the game
+ **/
+:root {
+   --background: #000000;
+   --text: #efefef;
+   --border: #999999;
+   --board: #111111;
+}
+
+/**
+ * Normalize
+ **/
+html {
+   box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+   box-sizing: inherit;
+}
+
+body {
+   margin: 0;
+   background-color: var(--background);
+   display: flex;
+   justify-content: center;
+   font-family: "Courier New", Courier, monospace;
+   flex-direction: column;
+   color: var(--text);
+}
+
+/** 
+ * Game styles
+ */
+#app {
+   width: 100%;
+   max-width: 500px;
+   margin: 1rem auto;
+   padding: 0;
+}
+
+.board {
+   background-color: var(--board);
+   border: 0px solid var(--border);
+   margin-top: 1rem;
+   z-index: 10;
+   width: 100%;
+   max-width: 500px;
+   cursor: none;
+}
+
+.game-over-container {
+   position: absolute;
+   top: 50%;
+   left: 50%;
+}
