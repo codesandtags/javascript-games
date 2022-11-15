@@ -3,7 +3,7 @@ let game = {};
 
 // Game constants
 const WIDTH = 400;
-const HEIGHT = 500;
+const HEIGHT = 450;
 const MIDDLE = HEIGHT / 2;
 const SCREEN_WIDTH = window.screen.width;
 const CANVAS_POSITION = SCREEN_WIDTH / 2 - WIDTH / 2;
@@ -221,6 +221,7 @@ const onPaddleMove = (event) => {
 const addListeners = () => {
    const canvas = document.querySelector("#pong");
 
+   canvas.addEventListener("touchmove", onPaddleMove);
    canvas.addEventListener("mousemove", onPaddleMove);
 };
 
@@ -235,7 +236,7 @@ const initializeGameValues = () => {
    game = {
       isNewGame: false,
       isGameOver: false,
-      computerSpeed: 5,
+      computerSpeed: 4,
       score: {
          player: 0,
          computer: 0,
@@ -266,7 +267,6 @@ const checkGamerOver = () => {
 
    if (playerScore === WINNING_SCORE || computerScore === WINNING_SCORE) {
       const winner = playerScore === WINNING_SCORE ? "Player 1" : "Computer";
-      debugger;
       game.isGameOver = true;
       showGameOverScreen(winner, startGame);
    }
