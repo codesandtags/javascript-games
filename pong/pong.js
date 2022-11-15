@@ -309,4 +309,4 @@ function startGame() {
    addListeners();
 }
 
-window.onload = startGame;
+window.onload = setTimeout(startGame, 2000);

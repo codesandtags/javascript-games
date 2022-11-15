@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build --base=/javascript-games/",
     "preview": "vite preview",
     "publish": "npm run build && gh-pages -d dist -b master"
   },
