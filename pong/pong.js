@@ -13,6 +13,10 @@ const IS_MOBILE = window.matchMedia("(max-width: 600px)");
 const WINNING_SCORE = 5;
 const FONT_SCORE = "32px Courier New";
 
+const bounceWallSound = new Audio("./bounce1.mp3");
+const bouncePaddleSound = new Audio("./bounce2.mp3");
+const scoreSound = new Audio("./score.mp3");
+
 // Ball
 const BALL_RADIUS = 5;
 const BALL_COLOR = "#00FCFF";
@@ -22,12 +26,6 @@ const PADDLE_HEIGHT = 8;
 const PADDLE_WIDTH = 45;
 const PADDLE_DIFFERENCE = 20;
 const PADDLE_COLOR = "white";
-
-let playerScore = 0;
-let computerScore = 0;
-
-let isNewGame = true;
-let isGameOver = true;
 
 const renderPaddle = (context, type) => {
    context.fillStyle = PADDLE_COLOR;
@@ -126,6 +124,7 @@ const bounceOffLeftWall = (ball) => {
    if (ball.X < 0 && ball.speedX < 0) {
       console.log("🏓💥 Ball hit LEFT wall");
       ball.speedX = -ball.speedX;
+      bounceWallSound.play();
    }
 };
 
@@ -133,6 +132,7 @@ const bounceOffRightWall = (ball) => {
    if (ball.X > WIDTH && ball.speedX > 0) {
       console.log("🏓💥 Ball hit RIGHT wall");
       ball.speedX = -ball.speedX;
+      bounceWallSound.play();
    }
 };
 
@@ -140,6 +140,7 @@ const bounceOffPaddleBottom = (ball, paddleBottom) => {
    if (ball.Y > HEIGHT - PADDLE_DIFFERENCE) {
       if (ball.X > paddleBottom.X && ball.X < paddleBottom.X + PADDLE_WIDTH) {
          ball.paddleContact = true;
+         bouncePaddleSound.play();
 
          if (ball.playerMoved) {
             ball.speedY -= 1;
@@ -152,7 +153,7 @@ const bounceOffPaddleBottom = (ball, paddleBottom) => {
          ball.speedX = ball.trajectoryX * 0.3;
       } else {
          ballReset();
-         addScore("player");
+         addScore("computer");
       }
    }
 };
@@ -162,14 +163,16 @@ const bounceOffPaddleTop = (ball, paddleTop) => {
       if (ball.X > paddleTop.X && ball.X < paddleTop.X + PADDLE_WIDTH) {
          ball.paddleContact = true;
          ball.speedY = -ball.speedY;
+         bouncePaddleSound.play();
       } else {
          ballReset();
-         addScore("computer");
+         addScore("player");
       }
    }
 };
 
 const addScore = (player) => {
+   scoreSound.play();
    if (player === "player") {
       game.score.player++;
    } else if (player === "computer") {
@@ -201,10 +204,7 @@ const animate = () => {
    ballMove();
    checkBallCollision();
    computerAIMovement();
-   window.requestAnimationFrame(animate);
-   console.table({
-      ball: game.ball,
-   });
+   checkGamerOver();
 };
 
 const onPaddleMove = (event) => {
@@ -227,6 +227,13 @@ const addListeners = () => {
 };
 
 const initializeGameValues = () => {
+   if (game.isGameOver && game.isNewGame) {
+      const canvas = document.querySelector("#pong");
+      const body = document.querySelector("body");
+      const gameOverContainer = document.querySelector(".game-over-container");
+      canvas.hidden = false;
+      body.removeChild(gameOverContainer);
+   }
    game = {
       isNewGame: false,
       isGameOver: false,
@@ -256,15 +263,50 @@ const initializeGameValues = () => {
    ballReset();
 };
 
-const startGame = () => {
+const checkGamerOver = () => {
+   const { player: playerScore, computer: computerScore } = game.score;
+
+   if (playerScore === WINNING_SCORE || computerScore === WINNING_SCORE) {
+      const winner = playerScore === WINNING_SCORE ? "Player 1" : "Computer";
+      debugger;
+      game.isGameOver = true;
+      showGameOverScreen(winner, startGame);
+   }
+
+   if (!game.isGameOver) {
+      window.requestAnimationFrame(animate);
+   }
+};
+
+const showGameOverScreen = (winner) => {
+   console.log("Showing game over...");
+   const canvas = document.querySelector("#pong");
+   canvas.hidden = true;
+
+   const gameOverContainer = document.createElement("div");
+   gameOverContainer.classList.add("game-over-container");
+
+   const title = document.createElement("h1");
+   title.textContent = `${winner} Wins!`;
+   const playAgainButton = document.createElement("button");
+
+   playAgainButton.addEventListener("click", () => {
+      game.isNewGame = true;
+      startGame();
+   });
+   playAgainButton.textContent = "Play Again";
+
+   gameOverContainer.append(title, playAgainButton);
+   const body = document.querySelector("body");
+   body.appendChild(gameOverContainer);
+};
+
+function startGame() {
    initializeGameValues();
    createLayout();
    createCanvas();
    animate();
-   // setInterval(animate, 300);
    addListeners();
-};
-
-const gameOver = () => {};
+}
 
 window.onload = startGame;
