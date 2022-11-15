@@ -2,8 +2,8 @@ const app = document.querySelector("#app");
 let game = {};
 
 // Game constants
-const WIDTH = 400;
-const HEIGHT = 600;
+const WIDTH = 350;
+const HEIGHT = 500;
 const MIDDLE = HEIGHT / 2;
 const SCREEN_WIDTH = window.screen.width;
 const CANVAS_POSITION = SCREEN_WIDTH / 2 - WIDTH / 2;
