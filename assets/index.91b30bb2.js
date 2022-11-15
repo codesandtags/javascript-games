@@ -8,7 +8,7 @@
       <button id="counter" type="button"></button>
     </div>
     <p class="read-the-docs">
-      <a href="/pong/index.html">Play Pong</a>
+      <a href="./pong/index.html">Play Pong</a>
     </p>
   </div>
 `;a(document.querySelector("#counter"));
