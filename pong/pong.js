@@ -9,7 +9,7 @@ const SCREEN_WIDTH = window.screen.width;
 const CANVAS_POSITION = SCREEN_WIDTH / 2 - WIDTH / 2;
 const IS_MOBILE = window.matchMedia("(max-width: 600px)");
 const WINNING_SCORE = 5;
-const FONT_SCORE = "32px Courier New";
+const FONT_SCORE = "20px Courier New";
 
 const bounceWallSound = new Audio("./bounce1.mp3");
 const bouncePaddleSound = new Audio("./bounce2.mp3");
@@ -95,9 +95,7 @@ const createCanvas = () => {
 };
 
 const createLayout = () => {
-   app.innerHTML = `
-        <h1>Pong 🏓</h1>
-    `;
+   app.innerHTML = `<h1>Pong 🏓</h1>`;
 };
 
 const ballReset = () => {
