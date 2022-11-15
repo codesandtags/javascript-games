@@ -3,7 +3,7 @@ let game = {};
 
 // Game constants
 const WIDTH = 400;
-const HEIGHT = 450;
+const HEIGHT = 600;
 const MIDDLE = HEIGHT / 2;
 const SCREEN_WIDTH = window.screen.width;
 const CANVAS_POSITION = SCREEN_WIDTH / 2 - WIDTH / 2;
